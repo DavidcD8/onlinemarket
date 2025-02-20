@@ -1,13 +1,9 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.conf import settings
 
 
-# Choices for the condition of the item
-Condition = (
-       ('New', 'New'),
-       ('Used', 'Used')
-
-)
-
+ 
 
 # Model for User
 class User(models.Model):
@@ -22,15 +18,27 @@ class User(models.Model):
 
 # Model for items
 class Item(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.TextField(max_length=200)
-    price = models.FloatField()
-    condition = models.CharField(max_length=4, choices=Condition)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    CONDITION_CHOICES = [
+        ('new', 'New'),
+        ('used', 'Used'),
+        ('refurbished', 'Refurbished'),
+    ]
+    seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    condition = models.CharField(max_length=20, choices=CONDITION_CHOICES, default='new')
 
     
+    def save(self, *args, **kwargs):
+        # Prevent changing the seller after creation
+        if self.pk and self.seller_id != Item.objects.get(pk=self.pk).seller_id:
+            raise ValidationError("You cannot change the seller of an item.")
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
+
 
 
 # Model for item images

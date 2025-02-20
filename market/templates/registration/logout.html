@@ -1,12 +1,8 @@
 
+{% block content %}{% if user.is_authenticated %}
+<form method="POST" action="{% url 'logout_view' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Logout</button>
+</form>
 
-
-{% block content %}
-  <h2>Login</h2>
-  <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">Login</button>
-  </form>
-  <p>Don't have an account? <a href="{% url 'register' %}">Sign up</a></p>
 {% endblock %}

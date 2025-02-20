@@ -1,18 +1,27 @@
 {% load static %}
 
 {% block content %}
-
-<h1>All Items</h1>
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 
-<ul>
-    {% for item in items %}
-        <li>
-            <a href="{% url 'item_view' item.id %}">{{ item.name }}</a> - €{{ item.price }}
-        </li>
-    {% empty %}
-        <p>No items available.</p>
-    {% endfor %}
-</ul>
+    <h1>All Items</h1>
+
+    <div id="all_items_body">
+        {% for item in items %}
+            <div class="card">
+                {% with item.itemimage_set.first as image %}
+                    {% if image %}
+                        <img src="{{ image.image.url }}" alt="{{ item.name }}" class="card-image">
+                    {% endif %}
+                {% endwith %}
+
+                <div class="card-content">
+                    <a href="{% url 'item_view' item.id %}" class="item-title">{{ item.name }}</a>
+                    <span class="price">€{{ item.price }}</span>
+                </div>
+            </div>
+        {% empty %}
+            <p>No items available.</p>
+        {% endfor %}
+    </div>
 
 {% endblock %}

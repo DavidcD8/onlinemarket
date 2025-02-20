@@ -3,6 +3,11 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .models import Item, ItemImage
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login as auth_login
+from django.contrib.auth import authenticate, login 
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import logout
+from django.core.exceptions import PermissionDenied
+from django.contrib.auth.decorators import login_required
 
 # Register view
 def register_view(request):
@@ -15,6 +20,8 @@ def register_view(request):
     else:
         form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
+
+
 
 # Login view
 def login_view(request):
@@ -29,35 +36,35 @@ def login_view(request):
     return render(request, 'registration/login.html', {'form': form})
 
 
-
-# Logout view
 def logout_view(request):
     logout(request)
-    return redirect('home_view')  # Redirect to home or login page after logout
-
-
+    return redirect('home')
 
 
 def home_view(request):
     return render(request, 'home.html')
 
-
+ 
+@login_required
 def sell_view(request):
     if request.method == 'POST':
         form = ItemForm(request.POST, request.FILES)
         if form.is_valid():
-            # Save the item first
-            item = form.save()
-            # Retrieve the list of uploaded images
+            item = form.save(commit=False)
+            # Directly assign request.user
+            item.seller = request.user  
+            item.save()
+
+            # Save images related to the item
             images = request.FILES.getlist('images')
-            # Create an ItemImage for each uploaded image
             for image in images:
                 ItemImage.objects.create(item=item, image=image)
-            return redirect('home')  # or another appropriate URL
+
+            return redirect('home')
     else:
         form = ItemForm()
-    context = {"form": form}
-    return render(request, "sell_item.html", context)
+
+    return render(request, "sell_item.html", {"form": form})
 
 
 
