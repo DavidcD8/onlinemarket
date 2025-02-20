@@ -122,6 +122,9 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+CSRF_COOKIE_SECURE = True  # If using HTTPS, this ensures the cookie is sent only over HTTPS
+CSRF_COOKIE_HTTPONLY = True  # Adds an additional layer of security
+
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 

@@ -7,7 +7,7 @@
 <p>{{ item.description }}</p>
 <p>Price: €{{ item.price }}</p>
 <p>Condition: {{ item.condition }}</p>
-
+<p>User: {{ user }}</p>
 <h2>Images</h2>
 {% for image in images %}
     <img src="{{ image.image.url }}" alt="{{ item.name }}" width="200">

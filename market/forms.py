@@ -1,25 +1,22 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from .models import Item, ItemImage
-from django.contrib.auth.forms import UserCreationForm
-
-class CustomUserCreationForm(UserCreationForm):
-    email = forms.EmailField(required=True)
-
-    class Meta:
-        model = User
-        fields = ['username', 'email', 'password1', 'password2']
-
-class CustomAuthenticationForm(AuthenticationForm):
-    class Meta:
-        model = User
-        fields = ['username', 'password']
+  
+ 
 
 class ItemForm(forms.ModelForm):
     class Meta:
         model = Item
-        fields = "__all__"
+        fields = ['name', 'description', 'price', 'condition']  # Explicitly include all fields except 'user'
+
+    def save(self, commit=True, user=None):
+        # Make sure that the user is set from the current logged-in user
+        instance = super().save(commit=False)
+        if user:
+            instance.user = user
+        if commit:
+            instance.save()
+        return instance
 
 class ItemImageForm(forms.ModelForm):
     class Meta:

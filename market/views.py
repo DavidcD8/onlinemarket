@@ -1,36 +1,34 @@
 from market.forms import ItemForm
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import Item, ItemImage
-from django.contrib.auth import authenticate, login
-from .forms import CustomUserCreationForm, CustomAuthenticationForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login as auth_login
 
-# Registration view
+# Register view
 def register_view(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
-            # Access cleaned data
-            username = form.cleaned_data.get('username')  # Getting the username from the cleaned data
-            password = form.cleaned_data.get('password1')  # Getting the password from the cleaned data
-            email = form.cleaned_data.get('email')  # Getting the email from the cleaned data
-            # Do something with the cleaned data (e.g., create the user, authenticate)
             user = form.save()
-            return redirect('home_view')
+            auth_login(request, user)
+            return redirect('home')
     else:
-        form = CustomUserCreationForm()
+        form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
 
 # Login view
 def login_view(request):
     if request.method == 'POST':
-        form = CustomAuthenticationForm(data=request.POST)
+        form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
-            login(request, user)
-            return redirect('home_view')
+            auth_login(request, user)
+            return redirect('home')
     else:
-        form = CustomAuthenticationForm()
+        form = AuthenticationForm()
     return render(request, 'registration/login.html', {'form': form})
+
+
 
 # Logout view
 def logout_view(request):
@@ -55,7 +53,7 @@ def sell_view(request):
             # Create an ItemImage for each uploaded image
             for image in images:
                 ItemImage.objects.create(item=item, image=image)
-            return redirect('home_view')  # or another appropriate URL
+            return redirect('home')  # or another appropriate URL
     else:
         form = ItemForm()
     context = {"form": form}
