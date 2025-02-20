@@ -41,10 +41,21 @@ def logout_view(request):
     return redirect('home')
 
 
-def home_view(request):
-    return render(request, 'home.html')
-
+# View for home page
+def home(request):
+    return render(request, 'home.html', {'current_page': 'home'})
  
+
+
+# View to search for items
+def search_results(request):
+    query = request.GET.get("query")
+    results = Item.objects.filter(name__icontains=query)
+    return render( request, "search_results.html", {"results": results, "query": query})
+
+
+
+# View to sell an item
 @login_required
 def sell_view(request):
     if request.method == 'POST':
