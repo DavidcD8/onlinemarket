@@ -5,9 +5,10 @@
 
 <h1>{{ item.name }}</h1>
 <p>{{ item.description }}</p>
-<p>Price: €{{ item.price }}</p>
-<p>Condition: {{ item.condition }}</p>
-<p>Seller: {{ item.seller }}</p>  <!-- Displays the original owner -->
+<p><strong>Price:</strong> €{{ item.price }}</p>
+<p><strong>Number:</strong> {{ profile.number }}</p>  <!-- Corrected this line -->
+<p><strong>Condition:</strong> {{ item.condition }}</p>
+<p><strong>Seller:</strong> {{ item.seller }}</p>
 
 <h2>Images</h2>
 {% for image in images %}

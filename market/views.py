@@ -1,26 +1,29 @@
 from market.forms import ItemForm
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import Item, ItemImage
-from django.contrib.auth.forms import UserCreationForm
+from .forms import UserRegisterForm
 from django.contrib.auth import login as auth_login
-from django.contrib.auth import authenticate, login 
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import logout
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
+from .forms import ProfileForm
+from .models import Profile
 
 # Register view
+
 def register_view(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = UserRegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
-            auth_login(request, user)
+            auth_login(request, user)  # Log in new user
             return redirect('home')
-    else:
-        form = UserCreationForm()
-    return render(request, 'registration/register.html', {'form': form})
 
+    else:
+        form = UserRegisterForm()  # Ensure custom form is being instantiated
+
+    return render(request, 'registration/register.html', {'form': form})  # Render form properly
 
 
 # Login view
@@ -41,10 +44,56 @@ def logout_view(request):
     return redirect('home')
 
 
+
 # View for home page
 def home(request):
     return render(request, 'home.html', {'current_page': 'home'})
- 
+
+
+
+# View for profile page
+@login_required
+def profile_view(request):
+    # Try to get the profile for the logged-in user
+    profile, created = Profile.objects.get_or_create(user=request.user)
+
+    if request.method == 'POST':
+        # If the form is submitted, process the data
+        form = ProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')  # Redirect to avoid resubmitting the form
+    else:
+        # If the form is not submitted, display the current profile information
+        form = ProfileForm(instance=profile)
+
+    context = {
+        'current_page': 'profile',
+        'form': form,
+        'profile': profile,
+    }
+
+    return render(request, 'profile.html', context)
+
+
+
+@login_required
+def edit_profile(request):
+    profile = Profile.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')  # Redirect to the profile page after saving
+    else:
+        form = ProfileForm(instance=profile)
+
+    return render(request, 'profile/edit_profile.html', {'form': form})
+
+
+
+
 
 
 # View to search for items
@@ -63,9 +112,8 @@ def sell_view(request):
         if form.is_valid():
             item = form.save(commit=False)
             # Directly assign request.user
-            item.seller = request.user  
+            item.seller = request.user
             item.save()
-
             # Save images related to the item
             images = request.FILES.getlist('images')
             for image in images:
@@ -90,5 +138,10 @@ def item_list_view(request):
 def item_view(request, item_id):
     item = get_object_or_404(Item, id=item_id)
     images = ItemImage.objects.filter(item=item)
-    context = {"item": item, "images": images}
+    profile = item.seller.profile  # Access the profile from the seller
+    context = {
+        "item": item, 
+        "images": images,
+        "profile": profile  # Add the profile to the context
+    }
     return render(request, "item_page.html", context)
