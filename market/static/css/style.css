@@ -1,17 +1,19 @@
+
+
 /* General Styling */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    line-height: 1.6;
-   
-  }
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.6;
+  display: grid;
+  background-color: #f8f8f8;
 
-/* --- Animation Keyframes --- */
+ }
 
 /* Fade-in animation */
 @keyframes fadeIn {
@@ -22,7 +24,7 @@ body {
       opacity: 1;
     }
   }
-  
+
   /* Slide-down animation */
   @keyframes slideInDown {
     from {
@@ -34,9 +36,8 @@ body {
       opacity: 1;
     }
   }
-  
+
   /* --- Base Styles --- */
-  
   /* Navigation */
   .main-nav {
     background: #f8f9fa;
@@ -49,12 +50,12 @@ body {
     /* Fade in the entire navbar */
     animation: fadeIn 0.5s ease-out;
   }
-  
+
   .nav-links a {
     text-decoration: none;
     color: #333;
   }
-  
+
   .nav-container {
     display: flex;
     justify-content: space-between;
@@ -62,7 +63,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
   }
-  
+
   .logo {
     font-weight: bold;
     font-size: 1.2rem;
@@ -71,7 +72,7 @@ body {
     /* Slide down the logo on load */
     animation: slideInDown 0.5s ease-out;
   }
-  
+
   .nav-links {
     display: flex;
     gap: 2rem;
@@ -79,17 +80,17 @@ body {
     /* Fade in the navigation links */
     animation: fadeIn 0.5s ease-out;
   }
-  
+
   .nav-section {
     display: flex;
     gap: 1rem;
     align-items: center;
   }
-  
+
   li::marker {
     content: '';
   }
-  
+
   .mobile-menu-btn {
     display: none;
     background: none;
@@ -120,7 +121,7 @@ body {
     padding: 5px;
   }
   .search-form button:hover {
-    background-image: linear-gradient(45deg, rgb(3, 172, 3), rgb(0, 128, 0));
+    background-color: rgb(3, 172, 3); /* or a gradient */
     transition: background-color 0.3s ease;
     color: white;
 }
@@ -134,10 +135,12 @@ body {
 
 /* Footer */
 .main-footer {
-    background-color: #f8f9fa;
-    color: white;
+    background-color: #b8b8b8;
+    color: rgb(255, 255, 255);
     text-align: center;
     padding: 20px;
+    display:flex ;
+    flex-direction: column;
     text-decoration: none;
   }
   
@@ -147,7 +150,7 @@ body {
   }
   
   .main-footer a {
-    color: white;
+    color: rgb(255, 255, 255);
     text-decoration: none;
   }
   
@@ -205,9 +208,7 @@ body {
       text-align: center;
     }
   }
-  
-  
-  
+
   /* HOME PAGE */
   /* Hero Section */
   .hero {
@@ -244,86 +245,122 @@ body {
     text-align: center;
     color: white;
   }
-  
+
   .carousel-caption h2 {
     font-size: 32px;
     font-weight: bold;
   }
-  
+
   .carousel-caption p {
     font-size: 18px;
   }
-  
-
-  
 
   /* Content */
   .content {
     padding: 30px;
   }
-  
+
   .content h1 {
     text-align: center;
     font-size: 28px;
     margin-bottom: 20px;
   }
-  
-  
-  
 
 
-/* Grid Container */
-#all_items_body {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 20px;
-    width: 100%;
-    max-width: 1200px;
-    margin: 20px auto;
+/* --- Item List Page --- */
+
+
+#card_header{
+  display: flex;
+  padding: 20px;
+  justify-content: center
 }
 
-/* Card Styling */
+
+
+#all_items_body{
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+
 .card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    display: grid;
-    grid-template-rows: auto auto;
-    grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
-    height: 250px;
-    grid-column: 5 / span 8; /* Adjusts width */
-    padding: 10px;
+  background-color: #ffffff;
+  box-shadow: inset 1px 5px rgb(0, 64, 124);
+  border: 0.1px solid #f6f6f6;
+  border-radius: 2px;
+  width: 100%;
+  display: flex;
+  max-width: 800px;
+  min-width: 300px;
+  height: 280px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  grid-column: 2 / span 11;
+
 }
 
-/* Image Styling */
+
 .card-image {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    grid-column: 1 / 4;
+  height: 100%;
+  object-fit: cover;
 }
 
-/* Title & Price in Column 2 */
-.card-name {
-    grid-column: 2 / 3; 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+
+
+.card-title {
+  padding: 10px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: #333;
+  display: inline;
+  height: 0;
+  left: 70px;
+  position: relative;
+  flex-direction: row;
+  text-decoration: none;
 }
 
-.item-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #333;
-    text-decoration: none;
-}
+
 
 .card-price {
-    grid-column: 2 / 3; 
-    color: #148008;
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-top: 5px; /* Space between title and price */
-    text-align: center;
+  font-size: 1.6rem;
+  color: green;
+  height: 0px;
+  font-weight: bold;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  padding: 10px;
+  right: 50px;
+  top: 150px;
+  justify-content: end;
+  font-family: 'Courier New', monospace;
+
+
+}
+
+.card-description {
+  font-size: 1rem;
+  color: #666;
+}
+
+/* Mobile Styling */
+@media (max-width: 768px) {
+  #all_items_body {
+    justify-content: center; /* Center cards on small screens */
+  }
+
+  .card {
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+  }
+
+  .card-image {
+    width: 100%;
+    height: 200px;
+  }
 }

@@ -1,27 +1,28 @@
+ 
+{% extends 'base.html' %}
 {% load static %}
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 
-    <h1>All Items</h1>
+<h1 id="card_header">Available Items</h1>
 
-    <div id="all_items_body">
-        {% for item in items %}
-            <div class="card">
-                {% with item.itemimage_set.first as image %}
-                    {% if image %}
-                        <img src="{{ image.image.url }}" alt="{{ item.name }}" class="card-image">
-                    {% endif %}
-                {% endwith %}
+<div id="all_items_body">
+    {% for item in items %}
+        <div class="card">
+            {% with item.itemimage_set.first as image %}
+                {% if image %}
+                    <img src="{{ image.image.url }}" alt="{{ item.name }}" class="card-image">
+                {% endif %}
+            {% endwith %}
+            <a href="{% url 'item_view' item.id %}" class="card-title">{{ item.name }}</a>
+        <div class="card-price">€{{ item.price }}</div>
 
-                <div class="card-content">
-                    <a href="{% url 'item_view' item.id %}" class="item-title">{{ item.name }}</a>
-                    <span class="price">€{{ item.price }}</span>
-                </div>
-            </div>
-        {% empty %}
-            <p>No items available.</p>
-        {% endfor %}
-    </div>
+
+        </div>
+    {% empty %}
+        <p>No items available.</p>
+    {% endfor %}
+</div>
 
 {% endblock %}
