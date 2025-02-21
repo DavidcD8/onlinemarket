@@ -67,7 +67,7 @@ body {
   .logo {
     font-weight: bold;
     font-size: 1.2rem;
-    color: #333;
+    color: #06718c;
     text-decoration: none;
     /* Slide down the logo on load */
     animation: slideInDown 0.5s ease-out;
@@ -114,28 +114,72 @@ body {
   }
   
   .search-form button {
-    background-color: #ffffff;
-    border: solid 1px #dbdbdb;
+    background-color:  #06718c;
+    border: none;
     width: 60px;
-    border-radius: 4px;
+    border-radius: 2px;
+    color: white;
     padding: 5px;
   }
   .search-form button:hover {
-    background-color: rgb(3, 172, 3); /* or a gradient */
+    background-color: #036077;
     transition: background-color 0.3s ease;
     color: white;
+    cursor: pointer;
+
 }
 
-  .search-form input:focus {
-    outline: 1px solid #6bc0f1;
-    border: 1px solid #45ace7;
+ 
+
+.search-form button:active{ 
+  background-color: #61a2b3;
+
+}
+/* Mobile Styling */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;  /* Hide by default */
+    flex-direction: column; /* Ensure links stack vertically */
+    align-items: center;
+    width: 100%;
   }
-  
 
+  .mobile-menu-btn {
+    display: block;
+  }
 
+  .nav-container {
+    justify-content: space-between;
+  }
+
+  .nav-links.active {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    gap: 1rem;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background: #f8f9fa;
+    padding: 1rem;
+    border: 1px solid #aeaeae;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 100%; /* Full width */
+    z-index: 999;
+  }
+  .nav-section {
+    display: flex;
+    flex-direction: column; /* Stack items in a column */
+    gap: 1rem;
+    align-items: center;
+  }
+}
+
+ 
 /* Footer */
 .main-footer {
-    background-color: #b8b8b8;
+    background-color: #06718c;
     color: rgb(255, 255, 255);
     text-align: center;
     padding: 20px;
@@ -287,7 +331,7 @@ body {
 
 .card {
   background-color: #ffffff;
-  box-shadow: inset 1px 5px rgb(0, 64, 124);
+  box-shadow: inset 1px 5px #06718c;
   border: 0.1px solid #f6f6f6;
   border-radius: 2px;
   width: 100%;
