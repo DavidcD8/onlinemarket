@@ -127,10 +127,13 @@ def sell_view(request):
 
 
 
+
 # View to list all items
 def item_list_view(request):
     items = Item.objects.all()
     return render(request, "item_list.html", {"items": items})
+
+
 
 
 
@@ -145,3 +148,17 @@ def item_view(request, item_id):
         "profile": profile  # Add the profile to the context
     }
     return render(request, "item_page.html", context)
+
+
+def edit_item(request, item_id):
+    item = get_object_or_404(Item, id=item_id)
+    if item.seller != request.user:
+        raise PermissionDenied
+    if request.method == 'POST':
+        form = ItemForm(request.POST, request.FILES, instance=item)
+        if form.is_valid():
+            form.save()
+            return redirect('item_view', item_id=item_id)
+    else:
+        form = ItemForm(instance=item)
+    return render(request, "edit_item.html", {"form": form, "item": item})

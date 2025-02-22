@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 import dj_database_url
+from dotenv import load_dotenv
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,11 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-b39ow0*mgw6+cg18w&b&e$-3p$jk9zv%iwz#k_%+45ib)sov9d'
-
+ 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+SECRET_KEY = os.getenv("SECRET_KEY")
+DEBUG = os.getenv("DEBUG", "False") == "True"
 ALLOWED_HOSTS = ['*']
 
 
@@ -77,19 +78,18 @@ WSGI_APPLICATION = 'onlinesellers.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+
+load_dotenv()  # Load environment variables from .env
+
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
 }
-DATABASES = {
-    'default': dj_database_url.config(
-        default='postgresql://onlinesellers_user:uU91Vw7X42gJ7eUogBQdxXP9MCEhVopf@dpg-cusgcuggph6c739dggi0-a.frankfurt-postgres.render.com/onlinesellers',
-        conn_max_age=600,
-        sslmode='require'
-    )
-}
+# Ensure SSL is required
+DATABASES['default']['OPTIONS'] = {'sslmode': 'require'}
+
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
