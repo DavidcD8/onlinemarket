@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
 ]
 
 MIDDLEWARE = [
@@ -87,7 +87,7 @@ DATABASES = {
     'default': dj_database_url.config(
         default='postgresql://onlinesellers_user:uU91Vw7X42gJ7eUogBQdxXP9MCEhVopf@dpg-cusgcuggph6c739dggi0-a.frankfurt-postgres.render.com/onlinesellers',
         conn_max_age=600,
-        ssl_require=True
+        sslmode='require'
     )
 }
 
