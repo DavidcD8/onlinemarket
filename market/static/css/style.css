@@ -301,8 +301,7 @@ body {
 
  
 
-/* --- Item List Page --- */
-
+/* ITEM LIST PAGE*/
 
 #card_header{
   display: flex;
@@ -390,6 +389,49 @@ body {
     height: 200px;
   }
 }
+
+/* Pagination */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+}
+
+.page-item {
+  margin: 0 5px;
+}
+
+.page-link {
+  display: block;
+  padding: 4px 8px;
+  color: #616161;
+  text-decoration: none;
+  border: none;
+  box-shadow: 0px 1px 3px -1px #b9b9b9;
+  border-radius: 2px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.page-link:hover {
+  background-color: #06718c;
+  color: white;
+}
+
+.page-item.active .page-link {
+  background-color: #06718c;
+  color: white;
+  border-color: #06718c;
+}
+
+
+
+
 
 /* PROFILE PAGE */
 .profile-name {

@@ -9,7 +9,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from .forms import ProfileForm
 from .models import Profile
-
+from django.core.paginator import Paginator
 
 
 
@@ -140,6 +140,17 @@ def sell_view(request):
 # View to list all items
 def item_list_view(request):
     items = Item.objects.filter(is_sold=False)
+
+    # Set the number of items per page
+    items_per_page = 20
+    paginator = Paginator(items, items_per_page)
+
+    # Get the current page number from the request's GET parameters
+    page_number = request.GET.get("page")
+
+    # Get the Page object for the current page
+    page = paginator.get_page(page_number)
+
     return render(request, "item_list.html", {"items": items})
 
 
