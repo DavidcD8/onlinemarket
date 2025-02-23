@@ -15,6 +15,10 @@ urlpatterns = [
     path('search/', views.search_results, name='search_results'),
     path('profile/', views.profile_view, name='profile'),
     path('profile/edit/', views.edit_profile, name='edit_profile'),
+    path('edit_item/<int:item_id>/', views.edit_item, name='edit_item'),
+    #path('delete_item/<int:item_id>/', views.delete_item, name='delete_item'),
+    path('mark-sold/<int:item_id>/', views.mark_sold, name='mark_sold'),
+
  ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

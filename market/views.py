@@ -10,8 +10,10 @@ from django.contrib.auth.decorators import login_required
 from .forms import ProfileForm
 from .models import Profile
 
-# Register view
 
+
+
+# Register view
 def register_view(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
@@ -24,6 +26,8 @@ def register_view(request):
         form = UserRegisterForm()  # Ensure custom form is being instantiated
 
     return render(request, 'registration/register.html', {'form': form})  # Render form properly
+
+
 
 
 # Login view
@@ -67,13 +71,19 @@ def profile_view(request):
         # If the form is not submitted, display the current profile information
         form = ProfileForm(instance=profile)
 
+
     context = {
         'current_page': 'profile',
         'form': form,
         'profile': profile,
+        'items': Item.objects.filter(seller=request.user, is_sold=False)
     }
+    context['sold_items'] = Item.objects.filter(seller=request.user, is_sold=True)
+    print("Sold items:", context['sold_items'])  # Debugging line
 
     return render(request, 'profile.html', context)
+
+
 
 
 
@@ -94,13 +104,12 @@ def edit_profile(request):
 
 
 
-
-
 # View to search for items
 def search_results(request):
     query = request.GET.get("query")
     results = Item.objects.filter(name__icontains=query)
     return render( request, "search_results.html", {"results": results, "query": query})
+
 
 
 
@@ -130,9 +139,8 @@ def sell_view(request):
 
 # View to list all items
 def item_list_view(request):
-    items = Item.objects.all()
+    items = Item.objects.filter(is_sold=False)
     return render(request, "item_list.html", {"items": items})
-
 
 
 
@@ -143,13 +151,17 @@ def item_view(request, item_id):
     images = ItemImage.objects.filter(item=item)
     profile = item.seller.profile  # Access the profile from the seller
     context = {
-        "item": item, 
+        "item": item,
         "images": images,
-        "profile": profile  # Add the profile to the context
+        "profile": profile,  # Add the profile to the context
+
     }
     return render(request, "item_page.html", context)
 
 
+
+
+@login_required
 def edit_item(request, item_id):
     item = get_object_or_404(Item, id=item_id)
     if item.seller != request.user:
@@ -161,4 +173,14 @@ def edit_item(request, item_id):
             return redirect('item_view', item_id=item_id)
     else:
         form = ItemForm(instance=item)
-    return render(request, "edit_item.html", {"form": form, "item": item})
+    return render(request, "edit_item_page.html", {"form": form, "item": item})
+
+
+# View to mark an item as sold
+@login_required
+def mark_sold(request, item_id):
+    item = get_object_or_404(Item, id=item_id, seller=request.user)
+    item.is_sold = True
+    item.save()
+    return redirect('profile')  # Redirect to profile after marking as sold
+

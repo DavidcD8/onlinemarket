@@ -1,0 +1,11 @@
+{% extends base/base.html %}
+
+{% block content %}
+  <h1>Mark Item as Sold</h1>
+  <p>Are you sure you want to mark this item as sold?</p>
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit">Yes</button>
+  </form>
+  <a href="{% url 'profile' %}">Cancel</a>
+{% endblock %}

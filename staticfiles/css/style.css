@@ -12,7 +12,7 @@ body {
   line-height: 1.6;
   display: grid;
   background-color: #f8f8f8;
-
+  height: 100vh;
  }
 
 /* Fade-in animation */
@@ -299,17 +299,7 @@ body {
     font-size: 18px;
   }
 
-  /* Content */
-  .content {
-    padding: 30px;
-  }
-
-  .content h1 {
-    text-align: center;
-    font-size: 28px;
-    margin-bottom: 20px;
-  }
-
+ 
 
 /* --- Item List Page --- */
 

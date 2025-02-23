@@ -1,11 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/animate.min.css' %}" />
-<link rel="stylesheet" href="{% static 'css/profile.css' %}" />
-<link rel="stylesheet" href="{% static 'css/profile.css' %}" />
-
+{% block content %} 
 <h1 class="profile-name">Welcome, {{ user.username }}</h1>
 
 <!-- Profile Info -->
@@ -30,15 +26,14 @@
 <br>
 <hr>
 <div class="profile-container"></div>
- 
+
 
 <!-- Selling Items -->
 <div class="items-section">
   <h2 class="section-heading"><i class="fas fa-shopping-cart"></i> Selling Items</h2>
   <div class="scrollable-container">
-    {% for item in seller_items %}
+    {% for item in items %}
     <div class="item">
-
       <h3 class="item-name">{{ item.name }}</h3>
       <p class="item-description">{{ item.description }}</p>
       <p class="item-price">Price: €{{ item.price }}</p>
@@ -47,13 +42,9 @@
       <!-- Edit and Delete Buttons for the item owner -->
       <div class="item-actions">
         <a class="action-button edit-button" href="{% url 'edit_item' item.id %}">Edit</a>
-        <form method="POST" action="{% url 'mark_as_sold' item.id %}">
+        <form method="POST" action="{% url 'mark_sold' item.id %}">
           {% csrf_token %}
           <button type="submit" class="action-button mark-as-sold-button">Mark as Sold</button>
-        </form>
-        <form method="post" action="{% url 'delete_item' item.id %}">
-          {% csrf_token %}
-          <button type="submit" class="action-button delete-button">Delete</button>
         </form>
       </div>
       {% endif %}
@@ -63,17 +54,22 @@
 </div>
 
 <!-- Sold Items -->
+{% if sold_items %}
 <div class="items-section">
   <h2 class="section-heading"><i class="fas fa-check-circle"></i> Sold Items</h2>
   <div class="scrollable-container">
-    {% for product in sold_items %}
+    {% for item in sold_items %}
     <div class="item">
-      <h3 class="item-name">{{ product.name }}</h3>
-      <p class="item-description">{{ product.description }}</p>
-      <p class="item-price">Price: €{{ product.price }}</p>
-       </div>
+      <h3 class="item-name">{{ item.name }}</h3>
+      <p class="item-description">{{ item.description }}</p>
+      <p class="item-price">Price: €{{ item.price }}</p>
+    </div>
     {% endfor %}
   </div>
 </div>
+{% else %}
+<p>No sold items yet.</p>
+{% endif %}
+
 
  {% endblock %}
