@@ -2,19 +2,17 @@
 {% load static %}
 
 {% block content %}
-  <!-- Hero Carousel -->
+  <!-- Hero Section -->
   <section class="hero">
-    <div class="carousel">
-      <div class="carousel-item">
-        <img src="{% static 'images/hero_img.jpg' %}" alt="Electronics Sale 1">
-        <div class="carousel-caption">
-           <a href="{% url 'item_list' %}" class="cta-button">Shop Now</a>
+    <div class="slider">
+      <div class="slider-item">
+        <img src="{% static 'images/hero_img.jpg' %}" alt="Electronics Sale">
+        <div class="slider-caption"></div>
+           <a href="{% url 'item_list' %}" id="cta-button">Shop Now</a>
         </div>
       </div>
 
     </div>
   </section>
-
-  
 
 {% endblock %}

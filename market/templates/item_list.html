@@ -1,4 +1,3 @@
- 
 {% extends 'base.html' %}
 {% load static %}
 
@@ -15,37 +14,44 @@
                     <img src="{{ image.image.url }}" alt="{{ item.name }}" class="card-image">
                 {% endif %}
             {% endwith %}
-            <a href="{% url 'item_view' item.id %}" class="card-title">{{ item.name }}</a>
-        <div class="card-price">€{{ item.price }}</div>
 
-
+            <div class="card-content">
+                <a href="{% url 'item_view' item.id %}" class="card-title">{{ item.name }}</a>
+                <div class="card-price">€{{ item.price }}</div>
+            </div>
         </div>
     {% empty %}
         <p>No items available.</p>
     {% endfor %}
 </div>
 
+{% if items.has_other_pages %}
 <nav class="pagination-container" aria-label="Page navigation">
     <ul class="pagination">
-        <li class="page-item">
-            <a class="page-link" href="?page=1">First</a>
-        </li>
-        <li class="page-item">
-            <a class="page-link" href="?page={{ page.previous_page_number }}">Previous</a>
-        </li>
-        {% for page_num in page.paginator.page_range %}
-            <li class="page-item {% if page.number == page_num %}active{% endif %}">
+        {% if items.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">First</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ items.previous_page_number }}">Previous</a>
+            </li>
+        {% endif %}
+
+        {% for page_num in items.paginator.page_range %}
+            <li class="page-item {% if items.number == page_num %}active{% endif %}">
                 <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
             </li>
         {% endfor %}
-        {% if page.has_next %}
+
+        {% if items.has_next %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ page.next_page_number }}">Next</a>
+                <a class="page-link" href="?page={{ items.next_page_number }}">Next</a>
             </li>
             <li class="page-item">
-                <a class="page-link" href="?page={{ page.paginator.num_pages }}">Last</a>
+                <a class="page-link" href="?page={{ items.paginator.num_pages }}">Last</a>
             </li>
         {% endif %}
     </ul>
 </nav>
+{% endif %}
 {% endblock %}

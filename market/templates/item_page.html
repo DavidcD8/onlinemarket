@@ -1,22 +1,66 @@
+{% extends 'base.html' %}
+
 {% load static %}
+
+
+
 {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ item.name }}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
 
-<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<div class="container mt-5">
+    <div class="row align-items-center">
+        <!-- Image Carousel -->
+        <div class="col-md-6">
+            <div id="itemCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% if images %}
+                        {% for image in images %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}" data-bs-interval="5000">
+                            <img src="{{ image.image.url }}" class="d-block w-100" alt="{{ item.name }}">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>{{ item.name }} Image {{ forloop.counter }}</h5>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="carousel-item active">
+                            <p class="text-center">No images available.</p>
+                        </div>
+                    {% endif %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#itemCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#itemCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
 
-<h1>{{ item.name }}</h1>
-<p>{{ item.description }}</p>
-<p><strong>Price:</strong> €{{ item.price }}</p>
-<p><strong>Number:</strong> {{ profile.number }}</p>  <!-- Corrected this line -->
-<p><strong>Condition:</strong> {{ item.condition }}</p>
-<p><strong>Seller:</strong> {{ item.seller }}</p>
+        <!-- Item Details -->
+        <div class="col-md-6">
+            <h1 class="item-title">{{ item.name }}</h1>
+            <p class="item-description">{{ item.description }}</p>
+            <p class="item-price"><strong id="price_value">Price:</strong> €{{ item.price }}</p>
+            <p class="item-condition"><strong>Condition:</strong> {{ item.condition }}</p>
+            <p class="item-seller"><strong>Seller:</strong> {{ item.seller }}</p>
+            <p class="item-number"><strong>Contact:</strong> {{ profile.number }}</p>
 
-<h2>Images</h2>
-{% for image in images %}
-    <img src="{{ image.image.url }}" alt="{{ item.name }}" width="200">
-{% empty %}
-    <p>No images available.</p>
-{% endfor %}
+            <a href="{% url 'item_list' %}" class="back_btn">Back to all items</a>
+        </div>
+    </div>
+</div>
 
-<a href="{% url 'item_list' %}">Back to all items</a>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
 {% endblock %}

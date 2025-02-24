@@ -5,11 +5,12 @@ from .forms import UserRegisterForm
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import logout
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.contrib.auth.decorators import login_required
 from .forms import ProfileForm
 from .models import Profile
 from django.core.paginator import Paginator
+from PIL import Image
 
 
 
@@ -114,25 +115,52 @@ def search_results(request):
 
 
 # View to sell an item
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
+from .forms import ItemForm, ItemImageForm
+from .models import Item, ItemImage
+from PIL import Image
+
 @login_required
 def sell_view(request):
     if request.method == 'POST':
         form = ItemForm(request.POST, request.FILES)
+        images = request.FILES.getlist('images')  # Ensure correct field name
+
         if form.is_valid():
             item = form.save(commit=False)
-            # Directly assign request.user
             item.seller = request.user
             item.save()
-            # Save images related to the item
-            images = request.FILES.getlist('images')
+
+            # Validate and save images
             for image in images:
-                ItemImage.objects.create(item=item, image=image)
+                try:
+                    # Open image to check size
+                    img = Image.open(image)
+                    width, height = img.size
+                    if width < 1500 or height < 1000:
+                        raise ValidationError("Each image must be at least 1500 wide and 1000px tall.")
+
+                    # Save valid image
+                    ItemImage.objects.create(item=item, image=image)
+
+                except ValidationError as e:
+                    form.add_error(None, str(e))
+                    item.delete()  # Prevent partially saved data
+                    return render(request, "sell_item.html", {"form": form})
+                except Exception as e:
+                    form.add_error(None, "Invalid image format.")
+                    item.delete()
+                    return render(request, "sell_item.html", {"form": form})
 
             return redirect('home')
+    
     else:
         form = ItemForm()
 
     return render(request, "sell_item.html", {"form": form})
+
 
 
 

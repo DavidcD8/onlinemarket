@@ -36,7 +36,7 @@
     <div class="item">
       <h3 class="item-name">{{ item.name }}</h3>
       <p class="item-description">{{ item.description }}</p>
-      <p class="item-price">Price: €{{ item.price }}</p>
+      <p class="item-price_profile">Price: €{{ item.price }}</p>
        <!-- Mark as Sold Button -->
       {% if user.is_authenticated and item.seller == user %}
       <!-- Edit and Delete Buttons for the item owner -->
