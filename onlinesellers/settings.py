@@ -129,8 +129,11 @@ STATIC_URL = 'static/'
 MEDIA_URL = '/media/'  # URL prefix for serving media files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Absolute path to the media directory
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'market', 'static'),
 ]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
 
 CSRF_COOKIE_SECURE = True  # If using HTTPS, this ensures the cookie is sent only over HTTPS
 CSRF_COOKIE_HTTPONLY = True  # Adds an additional layer of security
