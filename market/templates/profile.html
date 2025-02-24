@@ -4,15 +4,16 @@
 {% block content %} 
 <h1 class="profile-name">Welcome, {{ user.username }}</h1>
 
-<!-- Profile Info -->
+
+
+<div class="profile-info-section">
+  <!-- Profile Info -->
 <h2>Profile Information</h2>
 <p><strong>Name:</strong> {{ profile.name }}</p>
 <p><strong>Number:</strong> {{ profile.number }}</p>
 <p><strong>Email:</strong> {{ user.email }}</p>
 
 
-
-<div class="profile-info-section">
   <a href="{% url 'logout' %}">Logout</a>
 
   <h2>Profile Information</h2>
