@@ -267,25 +267,29 @@ body {
   /* HOME PAGE */
     /* Hero Section */
     .hero {
-      position: relative;
-      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       height: 550px;
-      overflow: hidden;
     }
 
-  #cta-button{
-    background-color: #06718c;
+    #home-hero-button{
+      display: block;
+      margin: -350px auto;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+    }
+  #hero-button{
+    background-color: #5d8c06;
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    text-decoration: none;
-    text-align: center;
-    margin-top: 20px;
+    padding: 5px 20px;
+    border-radius: 2px;
   }
 
-  #cta-button:hover {
+  #hero-button:hover {
     background-color: #036077;
     transition: background-color 0.3s ease;
   }

@@ -2,15 +2,14 @@
 {% load static %}
 
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 
   <!-- Hero Section -->
   <section class="hero">
     <div class="slider">
       <div class="slider-item">
-        <img src="{% static 'images/hero_img.jpg' %}" alt="Electronics Sale">
+        <img src="{% static 'images/hero_img.JPG' %}" alt="Electronics Sale">
         <div class="slider-caption"></div>
-           <a href="{% url 'item_list' %}" id="cta-button">Shop Now</a>
+           <a href="{% url 'item_list' %}" id="home-hero-button"><button id="hero-button">Shop Now</button></a>
         </div>
       </div>
 
