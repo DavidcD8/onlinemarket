@@ -1,4 +1,4 @@
-from market.forms import ItemForm
+from market.forms import ItemForm,ItemImageForm
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import Item, ItemImage
 from .forms import UserRegisterForm
@@ -11,8 +11,7 @@ from .forms import ProfileForm
 from .models import Profile
 from django.core.paginator import Paginator
 from PIL import Image
-
-
+\
 
 # Register view
 def register_view(request):
@@ -114,13 +113,6 @@ def search_results(request):
 
 
 
-# View to sell an item
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ValidationError
-from .forms import ItemForm, ItemImageForm
-from .models import Item, ItemImage
-from PIL import Image
 
 @login_required
 def sell_view(request):
